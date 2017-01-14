@@ -2,11 +2,16 @@
   (:require [quil.core :as q :include-macros true]
             [quil.middleware :as m]))
 
+(def initial-state
+  {:dog-x 250
+   :dog-y 250
+   :direction :right
+   :is-day true })
+
 (defn setup []
   (q/frame-rate 30)
-  {:dog-x (/ (q/width) 2)
-   :dog-y (/ (q/height) 2)
-   :direction :right })
+  initial-state)
+
 
 (def load-image  (memoize q/load-image))
 
@@ -47,17 +52,36 @@
       (= key :down) (move-doggo-down state)
       :else state)))
 
+(defn update-day [state]
+  (if (= (mod (q/frame-count) 60) 0)
+    (assoc state :is-day (not (:is-day state)))
+    state))
+
 (defn update-state [state]
-  state )
+  (update-day state))
 
 (defn draw-dog [state]
   (q/image (load-image (str "images/" (name (:direction state)) ".png")) (:dog-x state) (:dog-y state)))
 
-(defn draw-state [state]
+(defn draw-status [state]
+  (q/text (str state " --- " (q/frame-count)) 20 20))
+
+(defn draw-night [state]
+  (q/background 0)
+  (draw-dog state)
+  (q/fill 255)
+  (draw-status state))
+
+(defn draw-day [state]
   (q/background 255)
   (draw-dog state)
   (q/fill 0)
-  (q/text (str state) 200 20))
+  (draw-status state))
+
+(defn draw-state [state]
+  (if (:is-day state)
+    (draw-day state)
+    (draw-night state)))
 
 (q/defsketch sorry-dog
   :host "sorry-dog"
