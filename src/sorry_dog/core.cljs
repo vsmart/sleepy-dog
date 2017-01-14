@@ -3,12 +3,12 @@
             [quil.middleware :as m]))
 
 (def initial-state
-  {:dog-x 300
-   :dog-y 300
+  {:dog-x 450
+   :dog-y 450
    :direction :up
    :is-day true
-   :food-x 40
-   :food-y 100
+   :food-x (rand-int 400)
+   :food-y (rand-int 400)
    :game-state :play})
 
 (defn setup []
@@ -57,14 +57,14 @@
       :else state)))
 
 (defn update-day-time [state]
-  (if (= (mod (q/frame-count) 30) 0)
+  (if (= (mod (q/frame-count) 3000) 0)
     (assoc state :is-day (not (:is-day state)))
     state))
 
 (defn update-dog-food [state]
   (if (and
-        (= (:dog-x state) (:food-x state))
-        (= (:dog-y state) (:food-y state)))
+        (and (> (:dog-x state) (- (:food-x state) 10) ) (< (:dog-x state) (+ (:food-x state) 10) ))
+        (and (> (:dog-y state) (- (:food-y state) 10) ) (< (:dog-y state) (+ (:food-y state) 10) )))
     (assoc state :game-state :win)
     state))
 
