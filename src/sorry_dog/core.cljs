@@ -57,7 +57,7 @@
       :else state)))
 
 (defn update-day-time [state]
-  (if (= (mod (q/frame-count) 3000) 0)
+  (if (= (mod (q/frame-count) 90) 0)
     (assoc state :is-day (not (:is-day state)))
     state))
 
@@ -82,9 +82,8 @@
       (str
         "images/"
         (if (:is-day state)
-          ""
-          "night-")
-        (name (:direction state))
+          (name (:direction state))
+          "night")
         ".png"))
   (:dog-x state) (:dog-y state)))
 
