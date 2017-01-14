@@ -9,8 +9,7 @@
    :is-day true
    :food-x 40
    :food-y 100
-   :game-state :play
-   })
+   :game-state :play})
 
 (defn setup []
   (q/frame-rate 30)
@@ -64,8 +63,8 @@
 
 (defn update-dog-food [state]
   (if (and
-        (= (:dog-x state) (:food-x state)
-        (= (:dog-y state) (:food-y state))))
+        (= (:dog-x state) (:food-x state))
+        (= (:dog-y state) (:food-y state)))
     (assoc state :game-state :win)
     state))
 
@@ -94,22 +93,31 @@
 
 (defn draw-night [state]
   (q/background 18 15 83)
-  (draw-dog state)
   (draw-food state)
+  (draw-dog state)
   (q/fill 255)
   (draw-status state))
 
 (defn draw-day [state]
   (q/background 255)
-  (draw-dog state)
   (draw-food state)
+  (draw-dog state)
   (q/fill 0)
   (draw-status state))
 
-(defn draw-state [state]
+(defn draw-play-state [state]
   (if (:is-day state)
     (draw-day state)
     (draw-night state)))
+
+(defn draw-win-state [state]
+  (q/background 206 70 145)
+  (q/text "you ate the food, well done sleepy dog" 50 200))
+
+(defn draw-state [state]
+  (cond
+    (= :win (:game-state state)) (draw-win-state state)
+    (= :play (:game-state state)) (draw-play-state state)))
 
 (q/defsketch sorry-dog
   :host "sorry-dog"
