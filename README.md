@@ -1,16 +1,13 @@
-# test-js
+# sleepy dog 
 
-A Quil sketch designed to ... well, that part is up to you.
+
+
+you're a sleepy dog. you want to eat the food, but at night time you fall asleep.
+
+Use the arrow keys to move around.
+
+Refresh the page to restart.
 
 ## Usage
 
-Run `lein compile` command and open `index.html` in your browser.
-
-For interactive development run `lein cljsbuild auto` command. This command will be recompiling cljs to js each time you modify `core.cljs` and you can see result immediately by refreshing page.
-
-## License
-
-Copyright © 2016 FIXME
-
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+run `lein figwheel`, then open the `index.html` to start building 
