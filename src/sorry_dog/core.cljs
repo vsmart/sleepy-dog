@@ -111,6 +111,7 @@
 
 (defn draw-win-state [state]
   (q/background 206 70 145)
+  (q/image (load-image (str "images/done.png")) 300 150 100 100)
   (q/text "you ate the food, well done sleepy dog." 50 200))
 
 (defn draw-state [state]
