@@ -3,9 +3,9 @@
             [quil.middleware :as m]))
 
 (def initial-state
-  {:dog-x 0
-   :dog-y 0
-   :direction :right
+  {:dog-x 300
+   :dog-y 300
+   :direction :up
    :is-day true
    :food-x 40
    :food-y 100
@@ -112,7 +112,7 @@
 
 (defn draw-win-state [state]
   (q/background 206 70 145)
-  (q/text "you ate the food, well done sleepy dog" 50 200))
+  (q/text "you ate the food, well done sleepy dog." 50 200))
 
 (defn draw-state [state]
   (cond
