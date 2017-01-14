@@ -3,46 +3,55 @@
             [quil.middleware :as m]))
 
 (defn setup []
-  ; Set frame rate to 30 frames per second.
   (q/frame-rate 30)
-  ; Set color mode to HSB (HSV) instead of default RGB.
-  (q/color-mode :hsb)
-  ; setup function returns initial state. It contains
-  ; circle color and position.
-  {:color 0
-   :angle 0})
+  {:dog-x (/ (q/width) 2)
+   :dog-y (/ (q/height) 2)})
 
 (def load-image  (memoize q/load-image))
 
+(defn move-doggo  [by-x by-y state]
+  (let  [new-state  (update state :dog-x + by-x)
+         newer-state  (update new-state :dog-y + by-y)]
+    newer-state))
+
+(def one-move 20)
+(def one-neg-move  (* one-move -1))
+
+(defn move-doggo-left  [state]
+  (move-doggo one-neg-move 0 state))
+
+(defn move-doggo-right  [state]
+  (move-doggo one-move 0 state))
+
+(defn move-doggo-up  [state]
+  (move-doggo 0 one-neg-move state))
+
+(defn move-doggo-down  [state]
+  (move-doggo 0 one-move state))
+
+(defn move-after-key-pressed  [state event]
+  (let  [key  (:key event)]
+    (cond
+      (= key :left) (move-doggo-left state)
+      (= key :right) (move-doggo-right state)
+      (= key :up) (move-doggo-up state)
+      (= key :down) (move-doggo-down state)
+      :else state)))
+
 (defn update-state [state]
-  ; Update sketch state by changing circle color and position.
-  {:color (mod (+ (:color state) 0.7) 255)
-   :angle (+ (:angle state) 0.1)})
+  state )
 
 (defn draw-state [state]
-  ; Clear the sketch by filling it with light-grey color.
-  (q/background 240)
-  ; Set circle color.
-  (q/fill (:color state) 255 255)
-  ; Calculate x and y coordinates of the circle.
-  (let [angle (:angle state)
-        x (* 150 (q/cos angle))
-        y (* 150 (q/sin angle))]
-    ; Move origin point to the center of the sketch.
-    (q/with-translation [(/ (q/width) 2)
-                         (/ (q/height) 2)]
-      ; Draw the .
-      (q/image (load-image "images/dog2.png") x y))))
+  (q/background 255)
+  (q/image (load-image "images/dog2.png") (:dog-x state) (:dog-y state))
+  (q/fill 0)
+  (q/text (str state) 200 20))
 
 (q/defsketch sorry-dog
   :host "sorry-dog"
   :size [500 500]
-  ; setup function called only once, during sketch initialization.
   :setup setup
-  ; update-state is called on each iteration before draw-state.
+  :key-pressed move-after-key-pressed
   :update update-state
   :draw draw-state
-  ; This sketch uses functional-mode middleware.
-  ; Check quil wiki for more info about middlewares and particularly
-  ; fun-mode.
   :middleware [m/fun-mode])
