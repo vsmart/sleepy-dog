@@ -3,8 +3,8 @@
             [quil.middleware :as m]))
 
 (def initial-state
-  {:dog-x 450
-   :dog-y 450
+  {:dog-x 400
+   :dog-y 400
    :direction :up
    :is-day true
    :food-x (rand-int 400)
@@ -63,8 +63,8 @@
 
 (defn update-dog-food [state]
   (if (and
-        (and (> (:dog-x state) (- (:food-x state) 10) ) (< (:dog-x state) (+ (:food-x state) 10) ))
-        (and (> (:dog-y state) (- (:food-y state) 10) ) (< (:dog-y state) (+ (:food-y state) 10) )))
+        (and (> (:dog-x state) (- (:food-x state) 20) ) (< (:dog-x state) (+ (:food-x state) 20) ))
+        (and (> (:dog-y state) (- (:food-y state) 20) ) (< (:dog-y state) (+ (:food-y state) 20) )))
     (assoc state :game-state :win)
     state))
 
@@ -85,7 +85,7 @@
           (name (:direction state))
           "night")
         ".png"))
-  (:dog-x state) (:dog-y state)))
+  (:dog-x state) (:dog-y state) 100 100))
 
 (defn draw-status [state]
   (q/text (str state " --- " (q/frame-count)) 20 20))
@@ -94,15 +94,13 @@
   (q/background 18 15 83)
   (draw-food state)
   (draw-dog state)
-  (q/fill 255)
-  (draw-status state))
+  (q/fill 255))
 
 (defn draw-day [state]
   (q/background 255)
   (draw-food state)
   (draw-dog state)
-  (q/fill 0)
-  (draw-status state))
+  (q/fill 0))
 
 (defn draw-play-state [state]
   (if (:is-day state)
@@ -111,8 +109,9 @@
 
 (defn draw-win-state [state]
   (q/background 206 70 145)
-  (q/image (load-image (str "images/done.png")) 300 150 100 100)
-  (q/text "you ate the food, well done sleepy dog." 50 200))
+  (q/image (load-image (str "images/done.png")) 300 150 100 120)
+  (q/text-size 30)
+  (q/text "you ate the food, well done sleepy dog." 50 180 200 200))
 
 (defn draw-state [state]
   (cond
