@@ -12,7 +12,8 @@
   :hooks [leiningen.cljsbuild]
 
   :cljsbuild
-  {:builds [{:source-paths ["src"]
+  {:builds { "dev"
+            {:source-paths ["src"]
              :id "dev"
              :figwheel true
              :compiler
@@ -20,4 +21,12 @@
               :output-dir "out"
               :main "sorry_dog.core"
               :optimizations :none
-              :pretty-print true}}]})
+              :pretty-print true}}
+             "min"
+            {:source-paths ["src"]
+             :id "min"
+             :compiler
+             {:output-to "js/sleepy_dog.js"
+              :output-dir "min"
+              :main "sorry_dog.core"
+              :optimizations :advanced }}}})
